@@ -7,11 +7,19 @@ function start (port, route, handle) {
 		var pathname = url.parse (request.url).pathname;
 		console.log ("Request received for " + pathname);
 
-		route (handle, pathname);
 
-		response.writeHead (200, {"Content-type": "text/plain"});
-		response.write ("Hello world!");
-		response.end();
+		// Route and write the response data
+		var content = route (handle, pathname);
+
+		if (content != null) {
+			response.writeHead (200, {"Content-type": "text/plain"});
+			response.write (content);
+			response.end();
+		} else {
+			response.writeHead (404, {"Content-type": "text/plain"});
+			response.write ("not found"); // TODO: ugly...
+			response.end();
+		}
 	}
 
 	http.createServer (onRequest).listen (port);
