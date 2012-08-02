@@ -9,17 +9,7 @@ function start (port, route, handle) {
 
 
 		// Route and write the response data
-		var content = route (handle, pathname);
-
-		if (content != null) {
-			response.writeHead (200, {"Content-type": "text/plain"});
-			response.write (content);
-			response.end();
-		} else {
-			response.writeHead (404, {"Content-type": "text/plain"});
-			response.write ("not found"); // TODO: ugly...
-			response.end();
-		}
+		var content = route (handle, pathname, request, response);
 	}
 
 	http.createServer (onRequest).listen (port);
